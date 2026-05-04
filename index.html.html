@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>禾雅寢具 庫存儀錶板</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:#F8F9FA;color:#2C2C2C;font-size:17px}
+:root{
+  --bg:#F8F9FA;--surface:#FFFFFF;--primary:#455A64;
+  --hoya:#C59A77;--don-g:#294C57;--don-tab:#1D3C45;--don-gold:#D7B33F;--hoyah:#000000;
+  --green:#388E3C;--red:#D32F2F;--yellow:#F57F17;
+  --muted:#607080;--border:#DDE2E8;
+}
+/* TOP BAR */
+.top-bar{background:var(--surface);border-bottom:1.5px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:0;position:sticky;top:0;z-index:100}
+.logo{font-size:16px;font-weight:700;color:var(--primary);letter-spacing:.04em;margin-right:28px;white-space:nowrap}
+.brand-tabs{display:flex;height:100%}
+.b-tab{padding:0 16px;cursor:pointer;font-size:14px;font-weight:500;border:none;background:none;border-bottom:3px solid transparent;color:var(--muted);display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap;font-family:inherit}
+.b-tab:hover{color:var(--primary)}
+.b-tab.act{color:var(--primary);border-bottom-color:var(--primary)}
+.b-tab.t-hoya.act{color:#8B6A50;border-bottom-color:var(--hoya)}
+.b-tab.t-don.act{color:var(--don-g);border-bottom-color:var(--don-g)}
+.b-tab.t-hoyah.act{color:#333;border-bottom-color:var(--hoyah)}
+.dot{width:8px;height:8px;border-radius:50%}
+.d-all{background:var(--primary)}.d-hoya{background:var(--hoya)}.d-don{background:var(--don-g)}.d-hoyah{background:var(--hoyah)}
+/* CONTROLS */
+.ctrl-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ctrl-grp{display:flex;align-items:center;gap:8px}
+.ctrl-lbl{font-size:14px;color:var(--muted);white-space:nowrap}
+.seg{padding:5px 13px;font-size:14px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--muted);font-family:inherit;transition:all .12s}
+.seg.act{background:var(--primary);color:#fff;border-color:var(--primary)}
+select{padding:5px 9px;font-size:14px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:#2C2C2C;font-family:inherit;cursor:pointer}
+.upd-lbl{margin-left:auto;font-size:13px;color:var(--muted)}
+/* MAIN */
+.main{padding:20px}
+.sec-title{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+/* CATEGORY CARDS */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.cat-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);border-color:#B0BEC5}
+.cat-card.act{border-color:var(--primary);box-shadow:0 2px 12px rgba(69,90,100,.15)}
+.cc-accent{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:10px 0 0 10px}
+.cc-name{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:12px}
+.cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m-val{font-size:21px;font-weight:700;line-height:1.1}
+.m-lab{font-size:13px;color:var(--muted);margin-top:2px}
+.cc-turn{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tv{font-size:17px;font-weight:700}
+.tv-ok{color:var(--green)}.tv-warn{color:var(--yellow)}.tv-danger{color:var(--red)}
+.cc-sub{font-size:13px;color:var(--muted);text-align:right}
+/* SERIES PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px}
+.panel-hdr{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.panel-title{font-size:15px;font-weight:700;color:var(--primary)}
+.panel-sub{font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:12px;align-items:center}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--muted)}
+.leg-sq{width:10px;height:10px;border-radius:2px}
+.sum-bar{display:flex;gap:24px;padding:12px 20px;background:#F0F4F5;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.sb-item{min-width:80px}
+.sb-val{font-size:17px;font-weight:700}
+.sb-lab{font-size:13px;color:var(--muted)}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:14px;color:var(--muted);font-weight:500;padding:9px 14px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;background:#F8F9FA}
+.tbl th:not(:first-child):not(:nth-child(2)){text-align:right}
+.tbl td{padding:11px 14px;border-bottom:1px solid #F0F2F4;font-size:16px;vertical-align:middle}
+.tbl td:not(:first-child):not(:nth-child(2)){text-align:right}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr.data-row:hover td{background:#F5F7F8}
+.s-name{font-weight:500;color:var(--primary);cursor:pointer;display:flex;align-items:center;gap:6px}
+.s-name:hover{text-decoration:underline}
+.exp-btn{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;padding:0;flex-shrink:0;transition:transform .2s}
+.exp-btn.open{transform:rotate(180deg)}
+.badge{display:inline-flex;padding:3px 8px;border-radius:12px;font-size:13px;font-weight:500}
+.bg-hoya{background:#FDF0E6;color:#8B6A50}
+.bg-don{background:#DDE8EB;color:#1D3C45}
+.bg-hoyah{background:#F0F0F0;color:#333}
+.st{display:inline-flex;padding:3px 8px;border-radius:3px;font-size:13px;font-weight:500}
+.st-ok{background:#E8F5E9;color:var(--green)}
+.st-warn{background:#FFF8E1;color:var(--yellow)}
+.st-danger{background:#FFEBEE;color:var(--red)}
+/* MINI BARS */
+.mb-wrap{display:flex;align-items:flex-end;gap:2px;height:28px;min-width:40px}
+.mb{border-radius:2px 2px 0 0;flex:1;min-height:2px;position:relative;cursor:pointer}
+.mb-25{background:#81C784;opacity:.65}
+.mb-26{background:#42A5F5}
+.mb-hi{outline:2px solid #F57F17;outline-offset:-1px;opacity:1!important}
+.mb-tooltip{display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#333;color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;white-space:nowrap;z-index:200;pointer-events:none}
+.mb:hover .mb-tooltip{display:block}
+/* EXPAND ROW */
+.exp-row td{background:#F8FAFB;padding:0;border-bottom:1px solid var(--border)}
+.exp-inner{padding:16px 20px}
+.exp-title{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:10px}
+.note-row{margin-top:10px;font-size:13px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap}
+/* FULL MONTH CHART */
+.month-chart-wrap{margin-bottom:14px}
+.month-bars{display:flex;align-items:flex-end;gap:3px;height:170px;overflow-x:auto}
+.month-col{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:22px}
+.month-bar-c{display:flex;flex-direction:column;justify-content:flex-end;height:130px;width:100%}
+.mbar{border-radius:2px 2px 0 0;width:100%;min-height:2px}
+.month-lbl{font-size:10px;color:var(--muted);text-align:center;white-space:nowrap}
+.month-val{font-size:10px;color:var(--muted);text-align:center}
+/* HOYA H SERIES CARDS */
+.hoyah-series-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px 20px}
+.hoyah-series-card{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
+.hoyah-series-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);border-color:#888}
+.hoyah-series-card.act{border-color:#1A1A1A;box-shadow:0 2px 10px rgba(0,0,0,.14)}
+.hsc-name{font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hsc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hsc-stat{text-align:center}
+.hsc-val{font-size:18px;font-weight:700;color:#1A1A1A}
+.hsc-lab{font-size:12px;color:var(--muted);margin-top:2px}
+.hsc-turn{margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.hsc-detail{font-size:12px;color:var(--muted)}
+.hoyah-detail-panel{padding:0 20px 20px}
+.hdp-title{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;padding-top:4px}
+/* COLOR CARDS */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:12px}
+.color-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.color-img{width:100%;height:56px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#aaa;background:#F0F4F5}
+.color-info{padding:7px 8px}
+.color-name{font-size:13px;font-weight:500}
+.color-sku{font-size:11px;color:var(--muted)}
+.color-stock{font-size:14px;font-weight:700;margin-top:3px}
+.footer{font-size:13px;color:var(--muted);text-align:center;padding:8px 0 20px}
+</style>
+</head>
+<body>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="logo">禾雅寢具 · 庫存儀錶板</div>
+  <div class="brand-tabs">
+    <button class="b-tab act" data-brand="ALL" onclick="setBrand(this)"><span class="dot d-all"></span>全部</button>
+    <button class="b-tab t-hoya" data-brand="HOYA" onclick="setBrand(this)"><span class="dot d-hoya"></span>HOYACASA</button>
+    <button class="b-tab t-don" data-brand="DON" onclick="setBrand(this)"><span class="dot d-don"></span>DON</button>
+    <button class="b-tab t-hoyah" data-brand="HOYA H" onclick="setBrand(this)"><span class="dot d-hoyah"></span>HOYA H</button>
+  </div>
+</div>
+<!-- CONTROLS -->
+<div class="ctrl-bar">
+  <div class="ctrl-grp">
+    <span class="ctrl-lbl">庫存範圍</span>
+    <button class="seg act" data-scope="0a" onclick="setScope(this)">0A 倉</button>
+    <button class="seg" data-scope="full" onclick="setScope(this)">全倉</button>
+  </div>
+  <div class="ctrl-grp">
+    <span class="ctrl-lbl">銷量區間</span>
+    <select id="sel-from" onchange="updateRange()"></select>
+    <span style="color:var(--muted);font-size:14px">—</span>
+    <select id="sel-to" onchange="updateRange()"></select>
+  </div>
+  <div id="yoy-hint" style="font-size:13px;color:var(--muted);background:#F0F4F5;padding:4px 10px;border-radius:4px;border:1px solid var(--border)"></div>
+  <div class="upd-lbl" id="data-date-lbl">資料更新：載入中...</div>
+</div>
+<!-- MAIN -->
+<div class="main">
+  <div class="sec-title">大分類總覽</div>
+  <div class="cards" id="cat-cards"></div>
+  <div class="panel" id="series-panel">
+    <div class="panel-hdr">
+      <div>
+        <div class="panel-title" id="panel-title">系列列表</div>
+        <div class="panel-sub" id="panel-sub"></div>
+      </div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-sq" style="background:#81C784;opacity:.7"></div>2025</div>
+        <div class="leg-item"><div class="leg-sq" style="background:#42A5F5"></div>2026</div>
+        <div class="leg-item" style="color:var(--yellow)">■ 選取區間</div>
+      </div>
+    </div>
+    <div class="sum-bar" id="sum-bar"></div>
+    <!-- HOYA H special view -->
+    <div id="hoyah-view" style="display:none"></div>
+    <!-- Normal table -->
+    <div id="normal-view" style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>系列名稱</th>
+            <th>品牌</th>
+            <th id="th-stock1">0A 庫存</th>
+            <th>G 倉庫存</th>
+            <th>未到量</th>
+            <th>裝櫃中</th>
+            <th id="th-turn">周轉月</th>
+            <th>區間銷量</th>
+            <th id="th-yoy">區間 YoY</th>
+            <th>月銷趨勢</th>
+            <th>狀態</th>
+          </tr>
+        </thead>
+        <tbody id="series-body"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="footer" id="footer-note">資料來源：Google Sheets EC主力品控管表A · 載入中...</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────
+const SHEET_DATA = [{"star": "★", "brand": "DON", "cat1": "FH", "cat2": "HO", "series": "HO-FH", "total_turnover": "1.5", "total_stock": "1054", "g_stock": "58", "oa_turnover": "1.5", "oa_stock": "996", "pending": "870", "in_container": "0", "m2501": "612", "m2502": "418", "m2503": "370", "m2504": "952", "m2505": "763", "m2506": "699", "m2507": "300", "m2508": "371", "m2509": "429", "m2510": "321", "m2511": "626", "m2512": "294", "m2601": "401", "m2602": "445", "m2603": "382"}, {"star": "★", "brand": "DON", "cat1": "FH", "cat2": "TXP", "series": "TXP-FH", "total_turnover": "2.9", "total_stock": "1032", "g_stock": "85", "oa_turnover": "2.6", "oa_stock": "947", "pending": "562", "in_container": "0", "m2501": "363", "m2502": "436", "m2503": "229", "m2504": "448", "m2505": "657", "m2506": "548", "m2507": "320", "m2508": "415", "m2509": "512", "m2510": "343", "m2511": "662", "m2512": "330", "m2601": "288", "m2602": "231", "m2603": "298"}, {"star": "★", "brand": "DON", "cat1": "FH", "cat2": "TX天絲", "series": "DON60FH", "total_turnover": "4.4", "total_stock": "3396", "g_stock": "4", "oa_turnover": "4.4", "oa_stock": "3392", "pending": "193", "in_container": "0", "m2501": "503", "m2502": "655", "m2503": "690", "m2504": "844", "m2505": "921", "m2506": "1509", "m2507": "1428", "m2508": "987", "m2509": "1321", "m2510": "1018", "m2511": "3279", "m2512": "664", "m2601": "301", "m2602": "557", "m2603": "1247"}, {"star": "★", "brand": "DON", "cat1": "FH", "cat2": "TS", "series": "DON60素色", "total_turnover": "2.5", "total_stock": "142", "g_stock": "0", "oa_turnover": "2.5", "oa_stock": "142", "pending": "0", "in_container": "0", "m2501": "0", "m2502": "77", "m2503": "53", "m2504": "95", "m2505": "87", "m2506": "93", "m2507": "77", "m2508": "61", "m2509": "78", "m2510": "40", "m2511": "123", "m2512": "36", "m2601": "6", "m2602": "7", "m2603": "46"}, {"star": "0", "brand": "HOYA", "cat1": "FH", "cat2": "TXF", "series": "素色銀纖維", "total_turnover": "33.3", "total_stock": "661", "g_stock": "164", "oa_turnover": "25.1", "oa_stock": "497", "pending": "0", "in_container": "0", "m2501": "0", "m2502": "0", "m2503": "0", "m2504": "0", "m2505": "0", "m2506": "26", "m2507": "82", "m2508": "57", "m2509": "103", "m2510": "104", "m2511": "38", "m2512": "29", "m2601": "26", "m2602": "55", "m2603": "38"}, {"star": "0", "brand": "HOYA", "cat1": "FH", "cat2": "TX天絲", "series": "TX-40S", "total_turnover": "0.9", "total_stock": "264", "g_stock": "128", "oa_turnover": "0.5", "oa_stock": "136", "pending": "72", "in_container": "0", "m2501": "300", "m2502": "157", "m2503": "255", "m2504": "456", "m2505": "579", "m2506": "396", "m2507": "293", "m2508": "269", "m2509": "370", "m2510": "197", "m2511": "201", "m2512": "103", "m2601": "114", "m2602": "153", "m2603": "92"}, {"star": "0", "brand": "HOYA", "cat1": "FH", "cat2": "TX天絲", "series": "TX-60S", "total_turnover": "10.6", "total_stock": "3315", "g_stock": "849", "oa_turnover": "7.9", "oa_stock": "2466", "pending": "385", "in_container": "0", "m2501": "37", "m2502": "34", "m2503": "69", "m2504": "158", "m2505": "364", "m2506": "264", "m2507": "394", "m2508": "352", "m2509": "243", "m2510": "263", "m2511": "385", "m2512": "340", "m2601": "440", "m2602": "582", "m2603": "384"}, {"star": "0", "brand": "HOYA", "cat1": "FH", "cat2": "CO", "series": "涼感FH", "total_turnover": "20.9", "total_stock": "1461", "g_stock": "107", "oa_turnover": "19.4", "oa_stock": "1354", "pending": "0", "in_container": "0", "m2501": "1", "m2502": "2", "m2503": "7", "m2504": "122", "m2505": "263", "m2506": "340", "m2507": "145", "m2508": "125", "m2509": "76", "m2510": "47", "m2511": "14", "m2512": "14", "m2601": "7", "m2602": "11", "m2603": "35"}, {"star": "0", "brand": "DON", "cat1": "BA", "cat2": "TXP", "series": "TXP-BA", "total_turnover": "4.3", "total_stock": "807", "g_stock": "34", "oa_turnover": "4.1", "oa_stock": "773", "pending": "0", "in_container": "0", "m2501": "213", "m2502": "260", "m2503": "307", "m2504": "206", "m2505": "202", "m2506": "347", "m2507": "184", "m2508": "181", "m2509": "221", "m2510": "220", "m2511": "495", "m2512": "250", "m2601": "199", "m2602": "148", "m2603": "158"}, {"star": "★", "brand": "HOYA", "cat1": "BA", "cat2": "HYS", "series": "天絲入棉BA", "total_turnover": "2.3", "total_stock": "1274", "g_stock": "180", "oa_turnover": "2.0", "oa_stock": "1094", "pending": "823", "in_container": "0", "m2501": "602", "m2502": "683", "m2503": "569", "m2504": "531", "m2505": "536", "m2506": "495", "m2507": "497", "m2508": "423", "m2509": "481", "m2510": "524", "m2511": "852", "m2512": "520", "m2601": "672", "m2602": "531", "m2603": "490"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "HX長絨棉素色", "series": "長絨棉素色BA", "total_turnover": "13.5", "total_stock": "243", "g_stock": "117", "oa_turnover": "7.0", "oa_stock": "126", "pending": "0", "in_container": "0", "m2501": "36", "m2502": "14", "m2503": "20", "m2504": "5", "m2505": "6", "m2506": "9", "m2507": "25", "m2508": "10", "m2509": "18", "m2510": "20", "m2511": "24", "m2512": "12", "m2601": "50", "m2602": "30", "m2603": "13"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "HX長絨棉印花", "series": "長絨棉BA", "total_turnover": "7.8", "total_stock": "659", "g_stock": "320", "oa_turnover": "4.0", "oa_stock": "339", "pending": "0", "in_container": "0", "m2501": "120", "m2502": "95", "m2503": "82", "m2504": "42", "m2505": "40", "m2506": "24", "m2507": "122", "m2508": "265", "m2509": "113", "m2510": "259", "m2511": "178", "m2512": "143", "m2601": "170", "m2602": "115", "m2603": "99"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "THS天絲棉", "series": "天絲棉BA", "total_turnover": "9.2", "total_stock": "278", "g_stock": "77", "oa_turnover": "6.6", "oa_stock": "201", "pending": "0", "in_container": "0", "m2501": "37", "m2502": "32", "m2503": "32", "m2504": "31", "m2505": "31", "m2506": "44", "m2507": "100", "m2508": "294", "m2509": "18", "m2510": "5", "m2511": "15", "m2512": "2", "m2601": "16", "m2602": "33", "m2603": "40"}, {"star": "★", "brand": "HOYA", "cat1": "BA", "cat2": "TX天絲印花", "series": "40抗菌BA", "total_turnover": "3.5", "total_stock": "754", "g_stock": "125", "oa_turnover": "2.9", "oa_stock": "629", "pending": "172", "in_container": "0", "m2501": "488", "m2502": "178", "m2503": "232", "m2504": "269", "m2505": "249", "m2506": "185", "m2507": "243", "m2508": "331", "m2509": "285", "m2510": "212", "m2511": "674", "m2512": "138", "m2601": "171", "m2602": "161", "m2603": "172"}, {"star": "★", "brand": "HOYA", "cat1": "BA", "cat2": "TX天絲印花", "series": "60抗菌BA", "total_turnover": "6.0", "total_stock": "1626", "g_stock": "108", "oa_turnover": "5.6", "oa_stock": "1518", "pending": "716", "in_container": "0", "m2501": "425", "m2502": "239", "m2503": "263", "m2504": "255", "m2505": "245", "m2506": "169", "m2507": "155", "m2508": "351", "m2509": "340", "m2510": "208", "m2511": "444", "m2512": "291", "m2601": "380", "m2602": "261", "m2603": "208"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "TXF", "series": "銀纖維BA", "total_turnover": "15.4", "total_stock": "3387", "g_stock": "1064", "oa_turnover": "10.6", "oa_stock": "2323", "pending": "0", "in_container": "0", "m2501": "1", "m2502": "4", "m2503": "106", "m2504": "132", "m2505": "188", "m2506": "117", "m2507": "130", "m2508": "259", "m2509": "250", "m2510": "443", "m2511": "340", "m2512": "288", "m2601": "302", "m2602": "341", "m2603": "277"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "TX天絲", "series": "自然脈動BA", "total_turnover": "16.1", "total_stock": "642", "g_stock": "205", "oa_turnover": "11.0", "oa_stock": "437", "pending": "328", "in_container": "0", "m2501": "54", "m2502": "29", "m2503": "38", "m2504": "35", "m2505": "69", "m2506": "40", "m2507": "59", "m2508": "41", "m2509": "32", "m2510": "42", "m2511": "42", "m2512": "33", "m2601": "45", "m2602": "51", "m2603": "38"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "TS天絲素色", "series": "60琉璃天絲BA", "total_turnover": "6.8", "total_stock": "237", "g_stock": "122", "oa_turnover": "3.3", "oa_stock": "115", "pending": "100", "in_container": "0", "m2501": "0", "m2502": "0", "m2503": "0", "m2504": "43", "m2505": "62", "m2506": "26", "m2507": "34", "m2508": "19", "m2509": "40", "m2510": "49", "m2511": "35", "m2512": "23", "m2601": "26", "m2602": "35", "m2603": "20"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "TXF", "series": "小香風BA", "total_turnover": "7.6", "total_stock": "416", "g_stock": "126", "oa_turnover": "5.3", "oa_stock": "290", "pending": "0", "in_container": "0", "m2501": "0", "m2502": "1", "m2503": "68", "m2504": "59", "m2505": "52", "m2506": "21", "m2507": "14", "m2508": "16", "m2509": "28", "m2510": "23", "m2511": "31", "m2512": "33", "m2601": "63", "m2602": "51", "m2603": "37"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "", "series": "史努比TXP/HYS", "total_turnover": "10.0", "total_stock": "397", "g_stock": "58", "oa_turnover": "8.5", "oa_stock": "339", "pending": "-8", "in_container": "0", "m2501": "19", "m2502": "15", "m2503": "11", "m2504": "44", "m2505": "111", "m2506": "79", "m2507": "54", "m2508": "75", "m2509": "51", "m2510": "58", "m2511": "54", "m2512": "40", "m2601": "29", "m2602": "38", "m2603": "39"}, {"star": "0", "brand": "HOYA", "cat1": "BA", "cat2": "", "series": "史努比60S", "total_turnover": "9.2", "total_stock": "1417", "g_stock": "375", "oa_turnover": "6.8", "oa_stock": "1042", "pending": "791", "in_container": "0", "m2501": "253", "m2502": "141", "m2503": "117", "m2504": "133", "m2505": "124", "m2506": "139", "m2507": "105", "m2508": "125", "m2509": "188", "m2510": "258", "m2511": "202", "m2512": "173", "m2601": "186", "m2602": "219", "m2603": "117"}, {"star": "0", "brand": "DON", "cat1": "BA", "cat2": "", "series": "DON授權TXP", "total_turnover": "1.6", "total_stock": "58", "g_stock": "35", "oa_turnover": "0.6", "oa_stock": "23", "pending": "0", "in_container": "0", "m2501": "55", "m2502": "31", "m2503": "32", "m2504": "36", "m2505": "51", "m2506": "39", "m2507": "40", "m2508": "92", "m2509": "98", "m2510": "154", "m2511": "86", "m2512": "47", "m2601": "45", "m2602": "48", "m2603": "15"}, {"star": "0", "brand": "DON", "cat1": "BA", "cat2": "TX天絲", "series": "DON授權60S", "total_turnover": "69.1", "total_stock": "576", "g_stock": "87", "oa_turnover": "58.7", "oa_stock": "489", "pending": "0", "in_container": "0", "m2501": "0", "m2502": "0", "m2503": "0", "m2504": "0", "m2505": "0", "m2506": "0", "m2507": "0", "m2508": "0", "m2509": "0", "m2510": "0", "m2511": "0", "m2512": "0", "m2601": "1", "m2602": "20", "m2603": "29"}, {"star": "★", "brand": "HOYA", "cat1": "FH", "cat2": "TS天絲素色", "series": "60素色天絲FH", "total_turnover": "2.3", "total_stock": "2220", "g_stock": "843", "oa_turnover": "1.4", "oa_stock": "1377", "pending": "0", "in_container": "1545", "m2501": "1082", "m2502": "864", "m2503": "926", "m2504": "1066", "m2505": "1295", "m2506": "1197", "m2507": "1013", "m2508": "1200", "m2509": "995", "m2510": "1024", "m2511": "1329", "m2512": "806", "m2601": "957", "m2602": "834", "m2603": "778"}, {"star": "★", "brand": "HOYA", "cat1": "A被", "cat2": "TS天絲素色", "series": "60素色天絲A", "total_turnover": "4.4", "total_stock": "1470", "g_stock": "185", "oa_turnover": "3.8", "oa_stock": "1285", "pending": "45", "in_container": "185", "m2501": "378", "m2502": "330", "m2503": "356", "m2504": "401", "m2505": "445", "m2506": "414", "m2507": "379", "m2508": "405", "m2509": "340", "m2510": "347", "m2511": "481", "m2512": "290", "m2601": "297", "m2602": "283", "m2603": "235"}, {"star": "★", "brand": "HOYA", "cat1": "B被", "cat2": "TS天絲素色", "series": "60素色天絲B", "total_turnover": "4.3", "total_stock": "962", "g_stock": "304", "oa_turnover": "2.9", "oa_stock": "658", "pending": "30", "in_container": "165", "m2501": "343", "m2502": "236", "m2503": "221", "m2504": "193", "m2505": "215", "m2506": "223", "m2507": "211", "m2508": "240", "m2509": "219", "m2510": "274", "m2511": "446", "m2512": "265", "m2601": "313", "m2602": "254", "m2603": "205"}, {"star": "★", "brand": "DON", "cat1": "FH", "cat2": "HX長絨棉素色", "series": "時光漫旅FH", "total_turnover": "5.5", "total_stock": "738", "g_stock": "38", "oa_turnover": "5.2", "oa_stock": "700", "pending": "-27", "in_container": "567", "m2501": "94", "m2502": "58", "m2503": "80", "m2504": "114", "m2505": "145", "m2506": "119", "m2507": "82", "m2508": "73", "m2509": "75", "m2510": "107", "m2511": "263", "m2512": "176", "m2601": "181", "m2602": "172", "m2603": "111"}, {"star": "★", "brand": "DON", "cat1": "A被", "cat2": "HX長絨棉素色", "series": "時光漫旅A", "total_turnover": "3.0", "total_stock": "168", "g_stock": "8", "oa_turnover": "2.8", "oa_stock": "160", "pending": "0", "in_container": "200", "m2501": "54", "m2502": "16", "m2503": "31", "m2504": "39", "m2505": "46", "m2506": "38", "m2507": "28", "m2508": "31", "m2509": "34", "m2510": "47", "m2511": "90", "m2512": "33", "m2601": "86", "m2602": "74", "m2603": "61"}, {"star": "0", "brand": "DON", "cat1": "FH", "cat2": "HY活性", "series": "極簡生活FH", "total_turnover": "5.8", "total_stock": "525", "g_stock": "86", "oa_turnover": "4.9", "oa_stock": "439", "pending": "0", "in_container": "0", "m2501": "126", "m2502": "98", "m2503": "82", "m2504": "91", "m2505": "132", "m2506": "125", "m2507": "77", "m2508": "80", "m2509": "75", "m2510": "92", "m2511": "136", "m2512": "79", "m2601": "135", "m2602": "68", "m2603": "67"}, {"star": "0", "brand": "DON", "cat1": "B被", "cat2": "HY活性", "series": "極簡生活B", "total_turnover": "4.3", "total_stock": "355", "g_stock": "54", "oa_turnover": "3.6", "oa_stock": "301", "pending": "0", "in_container": "0", "m2501": "115", "m2502": "94", "m2503": "73", "m2504": "57", "m2505": "72", "m2506": "75", "m2507": "55", "m2508": "55", "m2509": "59", "m2510": "84", "m2511": "181", "m2512": "112", "m2601": "180", "m2602": "91", "m2603": "59"}, {"star": "0", "brand": "HOYA H", "cat1": "F包", "cat2": "TS", "series": "100素色天絲F", "total_turnover": "2.6", "total_stock": "250", "g_stock": "128", "oa_turnover": "1.3", "oa_stock": "122", "pending": "0", "in_container": "0", "m2501": "120", "m2502": "71", "m2503": "95", "m2504": "90", "m2505": "115", "m2506": "80", "m2507": "87", "m2508": "78", "m2509": "56", "m2510": "89", "m2511": "66", "m2512": "60", "m2601": "129", "m2602": "132", "m2603": "53"}, {"star": "0", "brand": "HOYA H", "cat1": "HB", "cat2": "TS", "series": "100素色天絲HB", "total_turnover": "2.9", "total_stock": "307", "g_stock": "116", "oa_turnover": "1.8", "oa_stock": "191", "pending": "0", "in_container": "0", "m2501": "133", "m2502": "71", "m2503": "69", "m2504": "70", "m2505": "94", "m2506": "68", "m2507": "67", "m2508": "62", "m2509": "57", "m2510": "60", "m2511": "47", "m2512": "47", "m2601": "198", "m2602": "187", "m2603": "35"}, {"star": "0", "brand": "HOYA H", "cat1": "B被", "cat2": "TS", "series": "100素色天絲B", "total_turnover": "5.7", "total_stock": "261", "g_stock": "91", "oa_turnover": "3.7", "oa_stock": "170", "pending": "0", "in_container": "0", "m2501": "78", "m2502": "35", "m2503": "30", "m2504": "32", "m2505": "32", "m2506": "32", "m2507": "35", "m2508": "26", "m2509": "19", "m2510": "27", "m2511": "25", "m2512": "20", "m2601": "92", "m2602": "67", "m2603": "19"}, {"star": "0", "brand": "HOYA H", "cat1": "F包", "cat2": "TX天絲", "series": "100印花天絲F", "total_turnover": "20.1", "total_stock": "520", "g_stock": "237", "oa_turnover": "11.0", "oa_stock": "283", "pending": "0", "in_container": "0", "m2501": "31", "m2502": "21", "m2503": "21", "m2504": "25", "m2505": "33", "m2506": "35", "m2507": "36", "m2508": "46", "m2509": "55", "m2510": "53", "m2511": "28", "m2512": "29", "m2601": "43", "m2602": "25", "m2603": "12"}, {"star": "0", "brand": "HOYA H", "cat1": "HB", "cat2": "TX天絲", "series": "100印花天絲HB", "total_turnover": "24.6", "total_stock": "1220", "g_stock": "346", "oa_turnover": "17.6", "oa_stock": "874", "pending": "0", "in_container": "0", "m2501": "55", "m2502": "43", "m2503": "46", "m2504": "52", "m2505": "56", "m2506": "66", "m2507": "53", "m2508": "84", "m2509": "89", "m2510": "91", "m2511": "54", "m2512": "49", "m2601": "78", "m2602": "44", "m2603": "20"}, {"star": "0", "brand": "HOYA H", "cat1": "B被", "cat2": "TX天絲", "series": "100印花天絲B", "total_turnover": "33.9", "total_stock": "497", "g_stock": "134", "oa_turnover": "24.8", "oa_stock": "363", "pending": "0", "in_container": "0", "m2501": "22", "m2502": "11", "m2503": "12", "m2504": "12", "m2505": "21", "m2506": "20", "m2507": "16", "m2508": "26", "m2509": "17", "m2510": "19", "m2511": "18", "m2512": "15", "m2601": "31", "m2602": "15", "m2603": "6"}];
+
+// ─────────────────────────────────────────────────────────
+// MONTH CONFIG
+// ─────────────────────────────────────────────────────────
+const ALL_MONTHS = [
+  {key:'m2501',label:'25/01',year:2025},{key:'m2502',label:'25/02',year:2025},
+  {key:'m2503',label:'25/03',year:2025},{key:'m2504',label:'25/04',year:2025},
+  {key:'m2505',label:'25/05',year:2025},{key:'m2506',label:'25/06',year:2025},
+  {key:'m2507',label:'25/07',year:2025},{key:'m2508',label:'25/08',year:2025},
+  {key:'m2509',label:'25/09',year:2025},{key:'m2510',label:'25/10',year:2025},
+  {key:'m2511',label:'25/11',year:2025},{key:'m2512',label:'25/12',year:2025},
+  {key:'m2601',label:'26/01',year:2026},{key:'m2602',label:'26/02',year:2026},
+  {key:'m2603',label:'26/03',year:2026}
+];
+const MONTH_OPTS = [
+  {val:'m2501',lbl:'2025/01'},{val:'m2502',lbl:'2025/02'},{val:'m2503',lbl:'2025/03'},
+  {val:'m2504',lbl:'2025/04'},{val:'m2505',lbl:'2025/05'},{val:'m2506',lbl:'2025/06'},
+  {val:'m2507',lbl:'2025/07'},{val:'m2508',lbl:'2025/08'},{val:'m2509',lbl:'2025/09'},
+  {val:'m2510',lbl:'2025/10'},{val:'m2511',lbl:'2025/11'},{val:'m2512',lbl:'2025/12'},
+  {val:'m2601',lbl:'2026/01'},{val:'m2602',lbl:'2026/02'},{val:'m2603',lbl:'2026/03'}
+];
+
+// HOYA H logical series
+const HOYAH_SERIES = [
+  {id:'素色天絲', label:'100素色天絲', keyword:'素色天絲'},
+  {id:'印花天絲', label:'100印花天絲', keyword:'印花天絲'}
+];
+
+// ─────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────
+let state = {brand:'ALL', scope:'0a', fromM:'m2601', toM:'m2603', cat:'FH', hoyahSeries:null};
+
+const CARD_CATS = [
+  {id:'FH',    label:'FH 床包組',   cats:['FH'],            color:'#C59A77', placeholder:false,
+   excludeSeries:['60素色天絲FH','時光漫旅FH','極簡生活FH']},
+  {id:'BA',    label:'BA 整組',     cats:['BA'],            color:'#5C7A8A', placeholder:false},
+  // 系列卡片：只在各自品牌tab下顯示，全部tab不顯示
+  {id:'S60',   label:'60素色天絲',  seriesGroup:'60素色天絲', color:'#8B6A50', placeholder:false, isSeries:true, brand:'HOYA'},
+  {id:'SLITE', label:'時光漫旅',    seriesGroup:'時光漫旅',  color:'#294C57', placeholder:false, isSeries:true, brand:'DON'},
+  {id:'SIMPLE',label:'極簡生活',    seriesGroup:'極簡生活',  color:'#3E6B59', placeholder:false, isSeries:true, brand:'DON'},
+  {id:'PILLOW',label:'枕類',        cats:[],                color:'#9E9D89', placeholder:true,  placeholderText:'資料整理中'},
+  {id:'COOL',  label:'M 涼被',      cats:[],                color:'#7BB3C0', placeholder:true,  placeholderText:'資料整理中'},
+  {id:'QUILT', label:'被胎被毯',    cats:[],                color:'#294C57', placeholder:true,  placeholderText:'資料整理中'},
+  // HOYA H 總覽卡：全部tab顯示，點擊跳轉到 HOYA H tab
+  {id:'HOYAH', label:'HOYA H 系列', cats:[],                color:'#1A1A1A', placeholder:false, hoyah:true},
+  // HOYA H tab 才顯示的系列卡片
+  {id:'HS60',  label:'100素色天絲', seriesGroup:'素色天絲',  color:'#2A2A2A', placeholder:false, isHoyahSeries:true},
+  {id:'HS花',  label:'100印花天絲', seriesGroup:'印花天絲',  color:'#4A4A4A', placeholder:false, isHoyahSeries:true},
+];
+
+// ─────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────
+const n = v => parseFloat(String(v).replace(/[^0-9.\-]/g,'')) || 0;
+
+function getStock(row) { return state.scope==='0a' ? n(row.oa_stock) : n(row.total_stock); }
+
+// 前端即時計算周轉月：庫存 ÷ [(去年同月均銷 + 近三個月均銷) ÷ 2]
+// 今天 2026/04/27 → 去年同月=2025/04, 近三個月=2026/01,02,03
+function calcTurnover(row) {
+  const stock = getStock(row);
+  if(stock<=0) return 0;
+  // 去年同月：今天是4月 → m2504
+  const sameMonthKey = 'm2504';
+  const sameMonthSales = n(row[sameMonthKey]);
+  // 近三個月均銷：不含當月(4月)，取 m2603,m2602,m2601
+  const recent3 = (n(row['m2603'])+n(row['m2602'])+n(row['m2601']))/3;
+  const avgRef = (sameMonthSales + recent3) / 2;
+  if(avgRef<=0) return 0;
+  return stock / avgRef;
+}
+
+function getTurnover(row) { return calcTurnover(row); }
+
+function getRangeSales(row) {
+  const fi = MONTH_OPTS.findIndex(m=>m.val===state.fromM);
+  const ti = MONTH_OPTS.findIndex(m=>m.val===state.toM);
+  let s=0; for(let i=fi;i<=ti;i++) s+=n(row[MONTH_OPTS[i].val]); return s;
+}
+
+// Map a month key to its prior-year equivalent. Returns null if prior year not in data (< 2025)
+function priorKey(key) {
+  const m = key.match(/^m(\d{2})(\d{2})$/);
+  if(!m) return null;
+  const py = parseInt(m[1])-1;
+  if(py < 25) return null; // 2024 not in dataset
+  return `m${String(py).padStart(2,'0')}${m[2]}`;
+}
+
+// YoY for selected range vs prior year same months. Returns fraction or null.
+function getRangeYoY(row) {
+  const fi = MONTH_OPTS.findIndex(m=>m.val===state.fromM);
+  const ti = MONTH_OPTS.findIndex(m=>m.val===state.toM);
+  const keys = MONTH_OPTS.slice(fi,ti+1).map(m=>m.val);
+  const pkeys = keys.map(k=>priorKey(k));
+  if(pkeys.some(k=>k===null)) return null;
+  const cur  = keys.reduce((s,k)=>s+n(row[k]),0);
+  const prev = pkeys.reduce((s,k)=>s+n(row[k]),0);
+  if(prev===0) return null;
+  return (cur-prev)/prev;
+}
+
+function yoyDisp(pct) {
+  if(pct===null) return {text:'—', color:'var(--muted)'};
+  return {text:(pct>=0?'+':'')+(pct*100).toFixed(1)+'%', color:pct>=0?'var(--green)':'var(--red)'};
+}
+
+function updateYoyHint() {
+  const fl = MONTH_OPTS.find(m=>m.val===state.fromM)?.lbl||'';
+  const tl = MONTH_OPTS.find(m=>m.val===state.toM)?.lbl||'';
+  const pfk = priorKey(state.fromM); const ptk = priorKey(state.toM);
+  const el = document.getElementById('yoy-hint');
+  if(!pfk||!ptk) {
+    el.textContent = `YoY：${fl}–${tl} 無去年同期資料`;
+    el.style.color='var(--muted)';
+  } else {
+    const pfl = MONTH_OPTS.find(m=>m.val===pfk)?.lbl||pfk;
+    const ptl = MONTH_OPTS.find(m=>m.val===ptk)?.lbl||ptk;
+    el.textContent = `YoY 對比：${fl}–${tl} vs ${pfl}–${ptl}`;
+    el.style.color='#455A64';
+  }
+}
+
+function turnoverClass(t) { return t<=3?'tv-ok':t<=6?'tv-warn':'tv-danger'; }
+function statusTag(t) {
+  return t<=3?'<span class="st st-ok">正常</span>':t<=6?'<span class="st st-warn">注意</span>':'<span class="st st-danger">警示</span>';
+}
+function brandBadge(b) {
+  if(b==='HOYA') return '<span class="badge bg-hoya">HOYA</span>';
+  if(b==='DON')  return '<span class="badge bg-don">DON</span>';
+  return '<span class="badge bg-hoyah">H</span>';
+}
+function filteredData() { return SHEET_DATA.filter(r=>state.brand==='ALL'||r.brand===state.brand); }
+function dataForCat(catId) {
+  const cc = CARD_CATS.find(c=>c.id===catId);
+  if(!cc) return [];
+  if(cc.hoyah) return SHEET_DATA.filter(r=>r.brand==='HOYA H');
+  if(cc.placeholder) return [];
+  if(cc.isSeries) return SHEET_DATA.filter(r=>r.series.startsWith(cc.seriesGroup));
+  if(cc.isHoyahSeries) return SHEET_DATA.filter(r=>r.brand==='HOYA H'&&r.series.includes(cc.seriesGroup));
+  const excluded = cc.excludeSeries||[];
+  return filteredData().filter(r=>cc.cats.includes(r.cat1)&&r.brand!=='HOYA H'&&!excluded.includes(r.series));
+}
+function hoyahRows(keyword) { return SHEET_DATA.filter(r=>r.brand==='HOYA H'&&r.series.includes(keyword)); }
+
+// ─────────────────────────────────────────────────────────
+// INIT SELECTS
+// ─────────────────────────────────────────────────────────
+function initSelects() {
+  ['sel-from','sel-to'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.innerHTML=MONTH_OPTS.map(m=>`<option value="${m.val}">${m.lbl}</option>`).join('');
+  });
+  document.getElementById('sel-from').value=state.fromM;
+  document.getElementById('sel-to').value=state.toM;
+}
+
+// ─────────────────────────────────────────────────────────
+// RENDER CAT CARDS
+// ─────────────────────────────────────────────────────────
+function seriesGroupTurnover(rows) {
+  // 加權平均：Σ庫存 ÷ Σ月均銷 (去年同月+近三個月均銷)/2
+  const totalStock = rows.reduce((s,r)=>s+getStock(r),0);
+  const totalRef   = rows.reduce((s,r)=>{
+    const sm=n(r['m2504']); const r3=(n(r['m2603'])+n(r['m2602'])+n(r['m2601']))/3;
+    return s+(sm+r3)/2;
+  },0);
+  return totalRef>0 ? totalStock/totalRef : 0;
+}
+
+function renderCards() {
+  document.getElementById('cat-cards').innerHTML = CARD_CATS.map(cc=>{
+    // 系列卡片：只在各自品牌tab顯示，全部tab不顯示
+    if(cc.isSeries && state.brand!==cc.brand) return '';
+    // HOYA H 總覽卡：只在全部tab顯示
+    if(cc.hoyah && state.brand!=='ALL') return '';
+    // HOYA H 系列卡：只在 HOYA H tab 顯示
+    if(cc.isHoyahSeries && state.brand!=='HOYA H') return '';
+
+    if(cc.placeholder) return `<div class="cat-card" style="opacity:.55;cursor:default">
+      <div class="cc-accent" style="background:${cc.color}"></div>
+      <div class="cc-name">${cc.label}</div>
+      <div style="margin-top:20px;text-align:center;color:var(--muted);font-size:14px;padding:12px 0">🔧 ${cc.placeholderText}</div>
+    </div>`;
+
+    let rows;
+    if(cc.hoyah) rows=SHEET_DATA.filter(r=>r.brand==='HOYA H');
+    else rows=dataForCat(cc.id);
+    if(rows.length===0) return '';
+
+    const stock  = rows.reduce((s,r)=>s+getStock(r),0);
+    const g      = rows.reduce((s,r)=>s+n(r.g_stock),0);
+    const pending= rows.reduce((s,r)=>s+Math.max(0,n(r.pending)),0);
+    const inCont = rows.reduce((s,r)=>s+n(r.in_container),0);
+
+    let avgT, tc;
+    if(cc.isSeries||cc.isHoyahSeries||cc.hoyah) {
+      const t=seriesGroupTurnover(rows); avgT=t>0?t.toFixed(1):'—'; tc=t>0?turnoverClass(t):'';
+    } else {
+      const turns=rows.map(r=>getTurnover(r)).filter(t=>t>0);
+      avgT=turns.length?(turns.reduce((a,b)=>a+b,0)/turns.length).toFixed(1):'—';
+      tc=turns.length?turnoverClass(parseFloat(avgT)):'';
+    }
+    const act = state.cat===cc.id?' act':'';
+    const subLabel = cc.hoyah?'2 系列 · 6 SKU':cc.isHoyahSeries?`${rows.length} SKU`:cc.isSeries?`${rows.length} 品類`:`${rows.length} 系列`;
+    const nameStyle = (cc.hoyah||cc.isHoyahSeries)?'color:#1A1A1A':'';
+    const onclickFn = cc.hoyah ? `switchToHoyahTab()` : `setCat('${cc.id}')`;
+    const ctaText = cc.hoyah ? '點擊前往 HOYA H' : '點擊展開';
+
+    return `<div class="cat-card${act}" onclick="${onclickFn}">
+      <div class="cc-accent" style="background:${cc.color}"></div>
+      <div class="cc-name" style="${nameStyle}">${cc.label}</div>
+      <div class="cc-grid">
+        <div><div class="m-val">${stock.toLocaleString()}</div><div class="m-lab">${state.scope==='0a'?'0A 庫存':'全倉庫存'}</div></div>
+        <div><div class="m-val">${g.toLocaleString()}</div><div class="m-lab">G 倉庫存</div></div>
+        <div><div class="m-val" style="color:${pending>0?'var(--yellow)':'inherit'}">${pending.toLocaleString()}</div><div class="m-lab">未到量</div></div>
+        <div><div class="m-val">${inCont.toLocaleString()}</div><div class="m-lab">裝櫃中</div></div>
+      </div>
+      <div class="cc-turn">
+        <div><div class="tv ${tc}">${avgT} 月</div><div class="m-lab">${state.scope==='0a'?'0A':'全倉'}平均周轉月</div></div>
+        <div class="cc-sub">${subLabel}<br>${ctaText}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────────────────
+// RENDER SERIES TABLE
+// ─────────────────────────────────────────────────────────
+function renderSeries() {
+  updateYoyHint();
+  const cc = CARD_CATS.find(c=>c.id===state.cat);
+  // HOYAH 總覽卡點進去還是走 hoyahView（舊的系列卡片展示）
+  if(cc && cc.hoyah) { renderHoyahView(); return; }
+
+  document.getElementById('hoyah-view').style.display='none';
+  document.getElementById('normal-view').style.display='block';
+
+  let rows = cc ? dataForCat(state.cat) : filteredData().filter(r=>r.brand!=='HOYA H');
+  // isSeries: 60素色天絲/時光漫旅/極簡生活；isHoyahSeries: 100素色天絲/100印花天絲
+  const isSeries = cc && (cc.isSeries || cc.isHoyahSeries);
+  const isHoyahSeries = cc && cc.isHoyahSeries;
+
+  const panelSuffix = isSeries ? ' — 品類明細' : ' — 系列列表';
+  document.getElementById('panel-title').textContent=(cc?cc.label:'全部')+panelSuffix;
+  const fromLbl=MONTH_OPTS.find(m=>m.val===state.fromM)?.lbl||'';
+  const toLbl=MONTH_OPTS.find(m=>m.val===state.toM)?.lbl||'';
+  const rowLabel = isSeries ? '品類' : '系列';
+  document.getElementById('panel-sub').textContent=`顯示 ${rows.length} 個${rowLabel} · 銷量區間 ${fromLbl}–${toLbl}`;
+  document.getElementById('th-stock1').textContent=state.scope==='0a'?'0A 庫存':'全倉庫存';
+  document.getElementById('th-turn').textContent=state.scope==='0a'?'0A 周轉月':'全倉周轉月';
+
+  const pfk=priorKey(state.fromM); const ptk=priorKey(state.toM);
+  const yoyHdr = (pfk&&ptk)
+    ? `區間 YoY<br><span style="font-size:11px;font-weight:400">(vs 去年同期)</span>`
+    : `區間 YoY<br><span style="font-size:11px;font-weight:400;color:var(--yellow)">(無去年資料)</span>`;
+  document.getElementById('th-yoy').innerHTML = yoyHdr;
+
+  const totStock=rows.reduce((s,r)=>s+getStock(r),0);
+  const totG=rows.reduce((s,r)=>s+n(r.g_stock),0);
+  const totPend=rows.reduce((s,r)=>s+Math.max(0,n(r.pending)),0);
+  const totCont=rows.reduce((s,r)=>s+n(r.in_container),0);
+  const totSales=rows.reduce((s,r)=>s+getRangeSales(r),0);
+  let avgT, tc;
+  if(isSeries) {
+    const t=seriesGroupTurnover(rows); avgT=t>0?t.toFixed(1):'—'; tc=t>0?turnoverClass(t):'';
+  } else {
+    const turns=rows.map(r=>getTurnover(r)).filter(t=>t>0);
+    avgT=turns.length?(turns.reduce((a,b)=>a+b,0)/turns.length).toFixed(1):'—';
+    tc=turns.length?turnoverClass(parseFloat(avgT)):'';
+  }
+  document.getElementById('sum-bar').innerHTML=`
+    <div class="sb-item"><div class="sb-val">${totStock.toLocaleString()}</div><div class="sb-lab">${state.scope==='0a'?'0A 庫存':'全倉庫存'}</div></div>
+    <div class="sb-item"><div class="sb-val">${totG.toLocaleString()}</div><div class="sb-lab">G 倉庫存</div></div>
+    <div class="sb-item"><div class="sb-val">${totPend.toLocaleString()}</div><div class="sb-lab">未到量</div></div>
+    <div class="sb-item"><div class="sb-val">${totCont.toLocaleString()}</div><div class="sb-lab">裝櫃中</div></div>
+    <div class="sb-item"><div class="sb-val">${totSales.toLocaleString()}</div><div class="sb-lab">區間銷量</div></div>
+    <div class="sb-item"><div class="sb-val ${tc}">${avgT} 月</div><div class="sb-lab">${state.scope==='0a'?'0A':'全倉'}平均周轉月</div></div>
+  `;
+
+  const fi=MONTH_OPTS.findIndex(m=>m.val===state.fromM);
+  const ti=MONTH_OPTS.findIndex(m=>m.val===state.toM);
+  const rangeMonths = ALL_MONTHS.slice(fi, ti+1);
+  const maxVal=Math.max(...rows.flatMap(r=>rangeMonths.map(m=>n(r[m.key]))),1);
+  const tbody=document.getElementById('series-body');
+  tbody.innerHTML='';
+
+  rows.forEach((row,i)=>{
+    const t=getTurnover(row); const tc2=turnoverClass(t);
+    const rangeSales=getRangeSales(row); const stock=getStock(row);
+    const pending=n(row.pending);
+    const {text:yoyTxt, color:yoyColor}=yoyDisp(getRangeYoY(row));
+
+    const miniBars=rangeMonths.map((m)=>{
+      const v=n(row[m.key]); const h=maxVal>0?Math.max(8,Math.round(v/maxVal*100)):8;
+      return `<div class="mb ${m.year===2025?'mb-25':'mb-26'} mb-hi" style="height:${h}%;opacity:1"><div class="mb-tooltip">${m.label}: ${v.toLocaleString()}</div></div>`;
+    }).join('');
+
+    // 品類明細：顯示 cat1 + 品牌，不顯示星號
+    // 一般系列列表：顯示 series 名稱，不顯示星號
+    const nameCell = isSeries
+      ? `<div class="s-name" onclick="toggleExpand('exp-${i}',this)">${row.cat1}<button class="exp-btn" id="btn-${i}">▼</button></div>`
+      : `<div class="s-name" onclick="toggleExpand('exp-${i}',this)">${row.series}<button class="exp-btn" id="btn-${i}">▼</button></div>`;
+
+    const tr=document.createElement('tr'); tr.className='data-row';
+    tr.innerHTML=`
+      <td>${nameCell}</td>
+      <td>${brandBadge(row.brand)}</td>
+      <td style="${stock<100?'color:var(--red);font-weight:600':''}">${stock.toLocaleString()}</td>
+      <td>${n(row.g_stock).toLocaleString()}</td>
+      <td style="${pending>500?'color:var(--yellow);font-weight:600':''}">${Math.max(0,pending).toLocaleString()}</td>
+      <td>${n(row.in_container).toLocaleString()}</td>
+      <td><span style="font-weight:600" class="${tc2}">${t.toFixed(1)}月</span></td>
+      <td style="font-weight:600">${rangeSales.toLocaleString()}</td>
+      <td style="font-weight:700;color:${yoyColor}">${yoyTxt}</td>
+      <td><div class="mb-wrap" style="width:${rangeMonths.length*22}px">${miniBars}</div></td>
+      <td>${statusTag(t)}</td>
+    `;
+    tbody.appendChild(tr);
+
+    const expTr=document.createElement('tr'); expTr.className='exp-row'; expTr.id=`exp-${i}`; expTr.style.display='none';
+    expTr.innerHTML=`<td colspan="11">${buildExpandContent(row,fi,ti,maxVal)}</td>`;
+    tbody.appendChild(expTr);
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// HOYA H VIEW (按系列分兩張卡片，點開看 F/HB/B 明細)
+// ─────────────────────────────────────────────────────────
+function renderHoyahView() {
+  document.getElementById('normal-view').style.display='none';
+  document.getElementById('hoyah-view').style.display='block';
+  document.getElementById('panel-title').textContent='HOYA H 系列 — 系列總覽';
+  const fromLbl=MONTH_OPTS.find(m=>m.val===state.fromM)?.lbl||'';
+  const toLbl=MONTH_OPTS.find(m=>m.val===state.toM)?.lbl||'';
+  document.getElementById('panel-sub').textContent=`銷量區間 ${fromLbl}–${toLbl} · 點擊系列卡片查看 F包/HB/B被 明細`;
+
+  const allH=SHEET_DATA.filter(r=>r.brand==='HOYA H');
+  const totStock=allH.reduce((s,r)=>s+getStock(r),0);
+  const totG=allH.reduce((s,r)=>s+n(r.g_stock),0);
+  const totSales=allH.reduce((s,r)=>s+getRangeSales(r),0);
+  const turns=allH.map(r=>getTurnover(r)).filter(t=>t>0);
+  const avgT=turns.length?(turns.reduce((a,b)=>a+b,0)/turns.length).toFixed(1):'—';
+  const tc=turns.length?turnoverClass(parseFloat(avgT)):'';
+  document.getElementById('sum-bar').innerHTML=`
+    <div class="sb-item"><div class="sb-val">${totStock.toLocaleString()}</div><div class="sb-lab">${state.scope==='0a'?'0A 庫存':'全倉庫存'}</div></div>
+    <div class="sb-item"><div class="sb-val">${totG.toLocaleString()}</div><div class="sb-lab">G 倉庫存</div></div>
+    <div class="sb-item"><div class="sb-val">${totSales.toLocaleString()}</div><div class="sb-lab">區間銷量</div></div>
+    <div class="sb-item"><div class="sb-val ${tc}">${avgT} 月</div><div class="sb-lab">${state.scope==='0a'?'0A':'全倉'}平均周轉月</div></div>
+  `;
+
+  const cardsHtml = HOYAH_SERIES.map(hs=>{
+    const rows = hoyahRows(hs.keyword);
+    const stock = rows.reduce((s,r)=>s+getStock(r),0);
+    const g     = rows.reduce((s,r)=>s+n(r.g_stock),0);
+    const sales = rows.reduce((s,r)=>s+getRangeSales(r),0);
+    const turns = rows.map(r=>getTurnover(r)).filter(t=>t>0);
+    const avgT  = turns.length?(turns.reduce((a,b)=>a+b,0)/turns.length).toFixed(1):'—';
+    const tc2   = turns.length?turnoverClass(parseFloat(avgT)):'';
+    // YoY aggregated
+    const fi=MONTH_OPTS.findIndex(m=>m.val===state.fromM);
+    const ti=MONTH_OPTS.findIndex(m=>m.val===state.toM);
+    const keys=MONTH_OPTS.slice(fi,ti+1).map(m=>m.val);
+    const pkeys=keys.map(k=>priorKey(k));
+    let yoyPct=null;
+    if(!pkeys.some(k=>k===null)){
+      const cur=rows.reduce((s,r)=>s+keys.reduce((ss,k)=>ss+n(r[k]),0),0);
+      const prev=rows.reduce((s,r)=>s+pkeys.reduce((ss,k)=>ss+n(r[k]),0),0);
+      if(prev>0) yoyPct=(cur-prev)/prev;
+    }
+    const {text:yoyTxt,color:yoyColor}=yoyDisp(yoyPct);
+    const isAct=state.hoyahSeries===hs.id;
+    return `<div class="hoyah-series-card${isAct?' act':''}" onclick="toggleHoyahDetail('${hs.id}')">
+      <div class="hsc-name"><span class="badge bg-hoyah">H</span>${hs.label}</div>
+      <div class="hsc-grid">
+        <div class="hsc-stat"><div class="hsc-val">${stock.toLocaleString()}</div><div class="hsc-lab">${state.scope==='0a'?'0A 庫存':'全倉庫存'}</div></div>
+        <div class="hsc-stat"><div class="hsc-val">${sales.toLocaleString()}</div><div class="hsc-lab">區間銷量</div></div>
+        <div class="hsc-stat"><div class="hsc-val" style="color:${yoyColor}">${yoyTxt}</div><div class="hsc-lab">區間 YoY</div></div>
+      </div>
+      <div class="hsc-turn">
+        <div style="font-size:15px;font-weight:700" class="${tc2}">${avgT} 月周轉 · G倉 ${g.toLocaleString()}</div>
+        <div class="hsc-detail">${isAct?'▲ 收合明細':'▼ 展開 F/HB/B 明細'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  let detailHtml='';
+  if(state.hoyahSeries){
+    const hs=HOYAH_SERIES.find(h=>h.id===state.hoyahSeries);
+    if(hs){
+      const rows=hoyahRows(hs.keyword);
+      const fi=MONTH_OPTS.findIndex(m=>m.val===state.fromM);
+      const ti=MONTH_OPTS.findIndex(m=>m.val===state.toM);
+      const maxVal=Math.max(...rows.flatMap(r=>ALL_MONTHS.map(m=>n(r[m.key]))),1);
+      const rowsHtml=rows.map(row=>{
+        const stock=getStock(row); const t=getTurnover(row); const tc2=turnoverClass(t);
+        const sales=getRangeSales(row);
+        const {text:yoyTxt,color:yoyColor}=yoyDisp(getRangeYoY(row));
+        const miniBars=ALL_MONTHS.map((m,mi)=>{
+          const v=n(row[m.key]); const h=maxVal>0?Math.max(4,Math.round(v/maxVal*100)):4;
+          const isHi=mi>=fi&&mi<=ti;
+          return `<div class="mb ${m.year===2025?'mb-25':'mb-26'}${isHi?' mb-hi':''}" style="height:${h}%"><div class="mb-tooltip">${m.label}: ${v.toLocaleString()}</div></div>`;
+        }).join('');
+        return `<tr class="data-row">
+          <td style="font-weight:600;color:var(--primary)">${row.cat1}</td>
+          <td>${stock.toLocaleString()}</td>
+          <td>${n(row.g_stock).toLocaleString()}</td>
+          <td>${Math.max(0,n(row.pending)).toLocaleString()}</td>
+          <td><span class="${tc2}" style="font-weight:600">${t.toFixed(1)}月</span></td>
+          <td style="font-weight:600">${sales.toLocaleString()}</td>
+          <td style="font-weight:700;color:${yoyColor}">${yoyTxt}</td>
+          <td><div class="mb-wrap">${miniBars}</div></td>
+          <td>${statusTag(t)}</td>
+        </tr>`;
+      }).join('');
+      detailHtml=`<div class="hoyah-detail-panel">
+        <div class="hdp-title">${hs.label} · F包 / HB / B被 明細</div>
+        <div style="overflow-x:auto"><table class="tbl">
+          <thead><tr>
+            <th>品類</th><th>${state.scope==='0a'?'0A 庫存':'全倉庫存'}</th><th>G 倉</th>
+            <th>未到量</th><th>周轉月</th><th>區間銷量</th><th>區間 YoY</th><th>月銷趨勢</th><th>狀態</th>
+          </tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table></div>
+      </div>`;
+    }
+  }
+  document.getElementById('hoyah-view').innerHTML=`<div class="hoyah-series-grid">${cardsHtml}</div>${detailHtml}`;
+}
+
+function toggleHoyahDetail(id) {
+  state.hoyahSeries = state.hoyahSeries===id ? null : id;
+  renderHoyahView();
+}
+
+// ─────────────────────────────────────────────────────────
+// EXPAND ROW CONTENT
+// ─────────────────────────────────────────────────────────
+function buildExpandContent(row, fi, ti, maxVal) {
+  const colVals=ALL_MONTHS.map(m=>n(row[m.key]));
+  const localMax=Math.max(...colVals,1);
+  const monthBars=ALL_MONTHS.map((m,mi)=>{
+    const v=colVals[mi]; const h=Math.max(2,Math.round(v/localMax*130));
+    const isHi=mi>=fi&&mi<=ti;
+    const bg=m.year===2025?(isHi?'#66BB6A':'#A5D6A7'):(isHi?'#42A5F5':'#90CAF9');
+    return `<div class="month-col">
+      <div class="month-val" style="font-size:10px;font-weight:600;color:${m.year===2026?'#1976D2':'#2E7D32'}">${v>0?v.toLocaleString():''}</div>
+      <div class="month-bar-c"><div class="mbar" style="height:${h}px;background:${bg}"></div></div>
+      <div class="month-lbl">${m.label}</div>
+    </div>`;
+  }).join('');
+  const pending=n(row.pending); const inCont=n(row.in_container);
+  const calcT=getTurnover(row);
+  return `<div class="exp-inner">
+    <div class="exp-title">${row.series} · 月銷趨勢（全年概覽，橘框為選取區間）</div>
+    <div class="month-chart-wrap"><div class="month-bars">${monthBars}</div></div>
+    <div class="note-row">
+      <span>品牌：${row.brand}</span><span>類別：${row.cat1}</span>
+      <span>0A：${n(row.oa_stock).toLocaleString()}</span><span>G倉：${n(row.g_stock).toLocaleString()}</span>
+      ${pending!==0?`<span>未到量：${Math.max(0,pending).toLocaleString()}</span>`:''}
+      ${inCont>0?`<span>裝櫃中：${inCont.toLocaleString()}</span>`:''}
+      <span>周轉月（即時）：${calcT>0?calcT.toFixed(1):'—'}月</span>
+    </div>
+    <!-- 第二階段：Airtable 花色圖片串接預留位置 -->
+  </div>`;
+}
+
+function toggleExpand(id, nameEl) {
+  const row=document.getElementById(id); const btn=nameEl?nameEl.querySelector('.exp-btn'):null;
+  if(!row) return;
+  const open=row.style.display!=='none';
+  row.style.display=open?'none':'table-row';
+  if(btn) btn.classList.toggle('open',!open);
+}
+
+// ─────────────────────────────────────────────────────────
+// CONTROLS
+// ─────────────────────────────────────────────────────────
+// 點擊 HOYA H 總覽卡時跳轉到 HOYA H tab
+function switchToHoyahTab() {
+  document.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('act'));
+  document.querySelector('.b-tab.t-hoyah').classList.add('act');
+  state.brand='HOYA H';
+  state.cat='HS60';
+  state.hoyahSeries=null;
+  render();
+}
+
+function setBrand(el) {
+  document.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('act'));
+  el.classList.add('act');
+  state.brand=el.dataset.brand;
+  if(state.brand==='HOYA H') {
+    state.cat='HS60'; // 預設顯示 100素色天絲
+  } else if(['HS60','HS花'].includes(state.cat)) {
+    state.cat='FH'; // 離開 HOYA H tab，回到 FH
+  } else if(state.brand!=='ALL' && ['S60','SLITE','SIMPLE'].includes(state.cat)) {
+    if(state.brand!=='HOYA' && state.cat==='S60') state.cat='FH';
+    if(state.brand!=='DON' && ['SLITE','SIMPLE'].includes(state.cat)) state.cat='BA';
+  }
+  state.hoyahSeries=null;
+  render();
+}
+function setScope(el) {
+  document.querySelectorAll('.seg').forEach(b=>b.classList.remove('act'));
+  el.classList.add('act'); state.scope=el.dataset.scope; render();
+}
+function setCat(id) {
+  if(state.cat===id) return;
+  state.cat=id; state.hoyahSeries=null; render();
+}
+function updateRange() {
+  const f=document.getElementById('sel-from').value;
+  const t=document.getElementById('sel-to').value;
+  const fi=MONTH_OPTS.findIndex(m=>m.val===f);
+  const ti=MONTH_OPTS.findIndex(m=>m.val===t);
+  if(ti<fi){document.getElementById('sel-to').value=f;state.toM=f;}else state.toM=t;
+  state.fromM=f; render();
+}
+function render() { renderCards(); renderSeries(); }
+
+// ─────────────────────────────────────────────────────────
+// API 串接 - Google Apps Script
+// ─────────────────────────────────────────────────────────
+const API_URL = 'https://script.google.com/macros/s/AKfycbxph4wSRp07OaKSXCeg2s6mm3UD41PtgoFvFxsHrDlfDr_2uOy4X10UzdINYkeRc5A/exec';
+
+async function loadData() {
+  // 顯示載入中 overlay，不覆蓋 panel 結構
+  const overlay = document.createElement('div');
+  overlay.id = 'loading-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;z-index:999;font-size:17px;color:var(--muted)';
+  overlay.textContent = '⏳ 資料載入中，請稍候...';
+  document.body.appendChild(overlay);
+
+  try {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+
+    document.body.removeChild(overlay);
+
+    if (json.error) {
+      if (json.error === '無存取權限') {
+        alert(`您的帳號（${json.email}）沒有存取權限，請聯繫管理員`);
+      } else {
+        alert('資料載入失敗：' + json.error);
+      }
+      return;
+    }
+
+    // 用 API 回傳資料取代靜態資料
+    SHEET_DATA.length = 0;
+    json.data.forEach(d => SHEET_DATA.push(d));
+
+    // 更新時間顯示
+    const updatedAt = new Date(json.updatedAt);
+    const pad = n => String(n).padStart(2,'0');
+    const dateStr = `${updatedAt.getFullYear()}/${pad(updatedAt.getMonth()+1)}/${pad(updatedAt.getDate())} ${pad(updatedAt.getHours())}:${pad(updatedAt.getMinutes())}`;
+    document.getElementById('footer-note').textContent = `資料來源：Google Sheets EC主力品控管表A · 即時更新 ${dateStr}`;
+    document.getElementById('data-date-lbl').textContent = `資料更新：${dateStr}`;
+
+    // 重新渲染（panel 結構不動，只更新資料）
+    render();
+
+  } catch(err) {
+    if(document.getElementById('loading-overlay')) document.body.removeChild(overlay);
+    alert('網路連線異常，請重新整理頁面。\n錯誤：' + err.message);
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// START
+// ─────────────────────────────────────────────────────────
+initSelects();
+render(); // 先用靜態資料渲染，避免白畫面
+loadData(); // 非同步載入即時資料
+</script>
+</body>
+</html>
